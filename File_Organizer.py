@@ -30,7 +30,6 @@ def main():
         
         while(True):
             
-                
             folder_path = input("Enter folder path: ")
             
             if os.path.exists(folder_path):
@@ -49,6 +48,7 @@ def main():
                 print(f"{full_path} is a file")
                 has_files = True
                 break
+            
         if not has_files:
             print("No files found in this folder.")
             print("1. Delete the empty folder")
@@ -71,16 +71,12 @@ def main():
                     os.makedirs(folder_full_path, exist_ok = True)
                  
                 print(f"Created folders: {', '.join(name_list)}")
+                
             elif user_choice == 3:
                 continue
             else:
                 print("Invalid choice.")
 
-            
-        
-            
-            
-        
         while(True):
             print("1. Auto sort Feature: ")
             print("2. Manual sort Feature: ")
@@ -113,6 +109,7 @@ def main():
                         print(f"Moved: {filename} -> {category}/")
                         
                         files_moved = files_moved + 1
+                        
                 print(f"\nSummary:")
                 print(f"Folder: {folder_path}")
                 print(f"Files moved: {files_moved}")
@@ -148,7 +145,6 @@ def main():
                         except ValueError:
                             print("Error! You can only insert a number.")
                             
-                            
                     selected_index = file_number - 1
                         
                     selected_filename = files[selected_index]
@@ -178,7 +174,6 @@ def main():
                     if sort_another_file == "n" or sort_another_file == "no":
                         break
                     
-                    
                 print(f"\nSummary:")
                 print(f"Folder: {folder_path}")
                 print(f"Files moved: {files_moved}")
@@ -194,7 +189,6 @@ def main():
         continue_choice = input("Do you want to organize another folder? (y/n): ")
         if continue_choice == "n":
             break
-        
     
 if __name__ == "__main__":
     main()
