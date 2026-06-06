@@ -40,6 +40,47 @@ def main():
                 
         print("Folder path found!")
         
+        has_files = False
+        
+        for item in os.listdir(folder_path):
+            full_path = os.path.join(folder_path, item)
+            
+            if os.path.isfile(full_path):
+                print(f"{full_path} is a file")
+                has_files = True
+                break
+        if not has_files:
+            print("No files found in this folder.")
+            print("1. Delete the empty folder")
+            print("2. Add subfolders")
+            print("3. Choose another folder")
+            
+            user_choice = int(input("Enter your choice: "))
+            
+            if user_choice == 1:
+                os.rmdir(folder_path)
+                print(f"{folder_path} has been successfully deleted.")
+                continue
+            elif user_choice == 2:
+                folder_names = input("Enter folder name (separated by spaces): ")
+                
+                name_list = folder_names.split()
+                
+                for name in name_list:
+                    folder_full_path = os.path.join(folder_path, name)
+                    os.makedirs(folder_full_path, exist_ok = True)
+                 
+                print(f"Created folders: {', '.join(name_list)}")
+            elif user_choice == 3:
+                continue
+            else:
+                print("Invalid choice.")
+
+            
+        
+            
+            
+        
         while(True):
             print("1. Auto sort Feature: ")
             print("2. Manual sort Feature: ")
@@ -49,6 +90,8 @@ def main():
             
             if choice == 1:
                 print("Auto-sort feature running...")
+                
+                files_moved = 0
                 
                 items = os.listdir(folder_path)
                 
@@ -68,9 +111,18 @@ def main():
                         
                         shutil.move(filepath, destination_path)
                         print(f"Moved: {filename} -> {category}/")
+                        
+                        files_moved = files_moved + 1
+                print(f"\nSummary:")
+                print(f"Folder: {folder_path}")
+                print(f"Files moved: {files_moved}")
                 break
             elif choice == 2:
                 print("Manual sort feature is running...")
+                
+                folders_created = set()
+                
+                files_moved = 0
                 
                 while True:
                     
@@ -107,7 +159,9 @@ def main():
                     
                     destination_folder = os.path.join(folder_path, category)
                     
-                    os.makedirs(destination_folder, exist_ok = True)
+                    if not os.path.exists(destination_folder):
+                        os.makedirs(destination_folder)
+                        folders_created.add(category)
                     
                     destination_path = os.path.join(destination_folder, selected_filename)
                     
@@ -117,10 +171,18 @@ def main():
                     
                     print(f"Moved: {selected_filename} -> {category}/")
                     
+                    files_moved = files_moved + 1
+                    
                     sort_another_file = input("Sort another file (y/n): ").lower()
                     
                     if sort_another_file == "n" or sort_another_file == "no":
                         break
+                    
+                    
+                print(f"\nSummary:")
+                print(f"Folder: {folder_path}")
+                print(f"Files moved: {files_moved}")
+                print(f"Folders created: {folders_created}")
                         
             elif choice == 3:
                 print("Exiting program. Goodbye!")

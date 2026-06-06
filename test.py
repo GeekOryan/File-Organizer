@@ -108,7 +108,6 @@ def organize_files(directory):
 # Usage
 organize_files("./downloads")
 
-
 # Write a script that asks the user for a folder path, checks if it exists
 # and prints whether it was found or not.
 
