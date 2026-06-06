@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Your program's test folders
+TestFolder/
+Misc/
+Images/
+Documents/
+Music/
+Videos/
+Other/
+
+# Test files
+*.tmp
+*.temp
+
+# Logs
+*.log
