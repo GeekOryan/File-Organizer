@@ -1,4 +1,26 @@
 import os
+import shutil
+
+extension_map = {
+                    # For the images
+                    ".jpg": "Images",
+                    ".jpeg": "Images",
+                    ".png": "Images",
+                    ".gif": "Images",
+                    
+                    # For the Documents
+                    ".pdf": "Documents",
+                    ".txt": "Documents",
+                    ".docx": "Documents",
+                    
+                    # For Music
+                    ".mp3": "Music",
+                    ".wav": "Music",
+                    
+                    # For videos
+                    ".mp4": "Videos",
+                    ".avi": "Videos",
+                }
 
 def main():
     
@@ -21,12 +43,31 @@ def main():
         while(True):
             print("1. Auto sort Feature: ")
             print("2. Manual sort Feature: ")
-            print("3. Exiting Program: ")
+            print("3. Exit Program: ")
             
             choice = int(input("Enter choice: "))
             
             if choice == 1:
                 print("Auto-sort feature running...")
+                
+                items = os.listdir(folder_path)
+                
+                for filename in items:
+                    filepath = os.path.join(folder_path, filename)
+                    
+                    if os.path.isfile(filepath):
+                        print(f"Found File: {filename}")
+                        
+                        root, ext = os.path.splitext(filename)
+                        
+                        category = extension_map.get(ext, "Misc")
+                        destination_folder = os.path.join(folder_path, category)
+                        os.makedirs(destination_folder, exist_ok = True)
+                        
+                        destination_path = os.path.join(destination_folder, filename)
+                        
+                        shutil.move(filepath, destination_path)
+                        print(f"Moved: {filename} -> {category}/")
                 break
             elif choice == 2:
                 print("Manual sort feature running...")
