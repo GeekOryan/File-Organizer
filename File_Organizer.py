@@ -54,8 +54,11 @@ def main():
             print("1. Delete the empty folder")
             print("2. Add subfolders")
             print("3. Choose another folder")
-            
-            user_choice = int(input("Enter your choice: "))
+            try:  
+                user_choice = int(input("Enter your choice: "))
+            except ValueError:
+                print("Error! Please enter a number")
+                continue
             
             if user_choice == 1:
                 os.rmdir(folder_path)
@@ -72,6 +75,8 @@ def main():
                  
                 print(f"Created folders: {', '.join(name_list)}")
                 
+                continue
+                
             elif user_choice == 3:
                 continue
             else:
@@ -81,13 +86,21 @@ def main():
             print("1. Auto sort Feature: ")
             print("2. Manual sort Feature: ")
             print("3. Exit Program: ")
-            
-            choice = int(input("Enter choice: "))
-            
+            try:
+                choice = int(input("Enter choice: "))
+            except ValueError:
+                print("Error! Please enter a number.")
+                continue
+                
             if choice == 1:
                 print("Auto-sort feature running...")
                 
                 files_moved = 0
+                folders_created = set()
+                
+                asked_categories = set()
+                
+                category_decision = {}
                 
                 items = os.listdir(folder_path)
                 
@@ -101,10 +114,23 @@ def main():
                         
                         category = extension_map.get(ext, "Misc")
                         destination_folder = os.path.join(folder_path, category)
+                        conflict_exists = os.path.exists(destination_folder) and os.listdir(destination_folder)
                         os.makedirs(destination_folder, exist_ok = True)
-                        
+                        folders_created.add(category)
                         destination_path = os.path.join(destination_folder, filename)
                         
+                        if conflict_exists and category not in asked_categories:
+                            
+                            user_input = input(f"Folder '{category}' already has files. Reorganise (move files in) or skip? (r/s): ").lower()
+                            category_decision[category] = user_input
+                            asked_categories.add(category)
+                        else:
+                            user_input = category_decision.get(category, "r")
+                            
+                        if user_input == "s":
+                            print(f"Skipping: {filename}")
+                            continue
+                    
                         shutil.move(filepath, destination_path)
                         print(f"Moved: {filename} -> {category}/")
                         
@@ -155,14 +181,14 @@ def main():
                     
                     destination_folder = os.path.join(folder_path, category)
                     
-                    if not os.path.exists(destination_folder):
-                        os.makedirs(destination_folder)
-                        folders_created.add(category)
-                    
                     destination_path = os.path.join(destination_folder, selected_filename)
                     
                     source_path = os.path.join(folder_path, selected_filename)
                     
+                    if not os.path.exists(destination_folder):
+                        os.makedirs(destination_folder)
+                        folders_created.add(category)
+                        
                     shutil.move(source_path, destination_path)
                     
                     print(f"Moved: {selected_filename} -> {category}/")
@@ -177,7 +203,8 @@ def main():
                 print(f"\nSummary:")
                 print(f"Folder: {folder_path}")
                 print(f"Files moved: {files_moved}")
-                print(f"Folders created: {folders_created}")
+                print(f"Folders created: {', '.join(folders_created)}")
+                break
                         
             elif choice == 3:
                 print("Exiting program. Goodbye!")
