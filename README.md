@@ -52,6 +52,6 @@ cd file-organizer
 python organizer.py
 ```
 
-**When prompted, enter a full folder path, for example:**
+**When prompted, enter a full folder path, for example: cd \Users\User\documents\MessyFolder**
 
 ## Author: Oryan
